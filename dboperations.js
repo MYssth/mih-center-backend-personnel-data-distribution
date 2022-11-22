@@ -33,6 +33,7 @@ async function getPersonnel() {
     }
     catch (error) {
         console.error(error);
+        return { "status": "error", "message": error.message };
     }
 }
 
@@ -69,6 +70,7 @@ async function getPersonnelById(personnel_id) {
     }
     catch (error) {
         console.error(error);
+        return { "status": "error", "message": error.message };
     }
 }
 
@@ -87,6 +89,7 @@ async function getRoles(){
     }
     catch(error){
         console.error(error);
+        return { "status": "error", "message": error.message };
     }
 
 }
@@ -114,6 +117,7 @@ async function getRoleList(personnel_id) {
     }
     catch (error) {
         console.error(error);
+        return { "status": "error", "message": error.message };
     }
 
 }
@@ -132,6 +136,7 @@ async function getPositions() {
     }
     catch (error) {
         console.error(error);
+        return { "status": "error", "message": error.message };
     }
 }
 
@@ -149,6 +154,7 @@ async function getMihapps() {
     }
     catch(error){
         console.error(error);
+        return { "status": "error", "message": error.message };
     }
 }
 
