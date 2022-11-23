@@ -41,9 +41,9 @@ router.route('/getpersonnel/:id').get((request, response) => {
 
 });
 
-router.route('/getroles').get((request, response) => {
+router.route('/getlevels').get((request, response) => {
 
-    dboperations.getRoles().then(result => {
+    dboperations.getLevels().then(result => {
         response.json(result[0]);
     }).catch(err => {
         console.error(err);
@@ -52,9 +52,9 @@ router.route('/getroles').get((request, response) => {
 
 });
 
-router.route('/getrolelist/:id').get((request, response) => {
+router.route('/getlevellist/:id').get((request, response) => {
 
-    dboperations.getRoleList(request.params.id).then(result => {
+    dboperations.getLevelList(request.params.id).then(result => {
         response.json(result[0]);
     }).catch(err => {
         console.error(err);

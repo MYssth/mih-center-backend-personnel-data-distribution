@@ -74,15 +74,15 @@ async function getPersonnelById(personnel_id) {
     }
 }
 
-async function getRoles(){
+async function getLevels(){
 
     try{
 
-        console.log("getRoles request try to connect server");
+        console.log("getLevels request try to connect server");
         let pool = await sql.connect(config);
         console.log("connect complete");
-        let result = await pool.request().query("SELECT * FROM personnel_roles");
-        console.log("getRoles compelete");
+        let result = await pool.request().query("SELECT * FROM personnel_levels");
+        console.log("getLevels compelete");
         console.log("====================");
         return result.recordsets
         
@@ -94,23 +94,23 @@ async function getRoles(){
 
 }
 
-async function getRoleList(personnel_id) {
+async function getLevelList(personnel_id) {
     try {
 
-        console.log("getRoleList request try to connect server id = " + personnel_id);
+        console.log("getLevelList request try to connect server id = " + personnel_id);
         let pool = await sql.connect(config);
         console.log("connect complete");
         let result = await pool.request().input('personnel_id', sql.VarChar, personnel_id)
-            .query("SELECT personnel_role_list.role_id" +
-                ",personnel_roles.role_name" +
-                ",personnel_roles.role_description" +
-                ",personnel_roles.mihapp_id" +
+            .query("SELECT personnel_level_list.level_id" +
+                ",personnel_levels.level_name" +
+                ",personnel_levels.level_description" +
+                ",personnel_levels.mihapp_id" +
                 ",personnel_mihapps.mihapp_name" +
-                " FROM personnel_role_list " +
-                "INNER JOIN personnel_roles ON personnel_roles.role_id = personnel_role_list.role_id " +
-                "INNER JOIN personnel_mihapps ON personnel_mihapps.mihapp_id = personnel_roles.mihapp_id " +
+                " FROM personnel_level_list " +
+                "INNER JOIN personnel_levels ON personnel_levels.level_id = personnel_level_list.level_id " +
+                "INNER JOIN personnel_mihapps ON personnel_mihapps.mihapp_id = personnel_levels.mihapp_id " +
                 "WHERE personnel_id = @personnel_id");
-        console.log("getRoleList complete");
+        console.log("getLevelList complete");
         console.log("====================");
         return result.recordsets
 
@@ -125,11 +125,11 @@ async function getRoleList(personnel_id) {
 async function getPositions() {
     try {
 
-        console.log("getPosition call try to connect server");
+        console.log("getPositions call try to connect server");
         let pool = await sql.connect(config);
         console.log("connect complete");
         let result = await pool.request().query("SELECT * FROM personnel_positions");
-        console.log("get complete");
+        console.log("getPositions complete");
         console.log("====================");
         return result.recordsets;
 
@@ -147,7 +147,7 @@ async function getMihapps() {
         let pool = await sql.connect(config);
         console.log("connect complete");
         let result = await pool.request().query("SELECT * FROM personnel_mihapps");
-        console.log("get complete");
+        console.log("getMihapps complete");
         console.log("====================");
         return result.recordsets;
 
@@ -161,8 +161,8 @@ async function getMihapps() {
 module.exports = {
     getPersonnel: getPersonnel,
     getPersonnelById: getPersonnelById,
-    getRoles: getRoles,
-    getRoleList: getRoleList,
+    getLevels: getLevels,
+    getLevelList: getLevelList,
     getPositions: getPositions,
     getMihapps: getMihapps,
 }
