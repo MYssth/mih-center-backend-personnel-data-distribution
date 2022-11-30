@@ -74,6 +74,16 @@ router.route('/getpositions').get((request, response) => {
 
 });
 
+router.route('/getdepartments').get((request, response) => {
+
+    dboperations.getDepartments().then(result => {
+        response.json(result[0]);
+    }).catch(err => {
+        console.error(err);
+        response.sendStatus(500);
+    });
+});
+
 router.route('/getmihapps').get((request, response) => {
 
     dboperations.getMihapps().then(result => {

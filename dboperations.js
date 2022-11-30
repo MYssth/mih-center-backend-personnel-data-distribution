@@ -63,9 +63,9 @@ async function getPersonnelById(personnel_id) {
                 "INNER JOIN personnel_factions ON personnel_factions.faction_id = personnel_departments.faction_id " +
                 "INNER JOIN personnel_fields ON personnel_fields.field_id = personnel_factions.field_id " +
                 "WHERE personnel_id = @personnel_id");
-        console.log("get complete");
+        console.log("getPersonnelById complete");
         console.log("====================");
-        return result.recordsets;
+        return result.recordset;
 
     }
     catch (error) {
@@ -140,6 +140,23 @@ async function getPositions() {
     }
 }
 
+async function getDepartments() {
+
+    try {
+        console.log("getDepartments call try connect to server");
+        let pool = await sql.connect(config);
+        console.log("connect complete");
+        let result = await pool.request().query("SELECT * FROM personnel_departments");
+        console.log("getDepartments complete");                                                                                               
+        console.log("====================");
+        return result.recordsets;
+    }
+    catch(error){
+        console.error(error);
+    }
+
+}
+
 async function getMihapps() {
     try{
         
@@ -164,5 +181,6 @@ module.exports = {
     getLevels: getLevels,
     getLevelList: getLevelList,
     getPositions: getPositions,
+    getDepartments: getDepartments,
     getMihapps: getMihapps,
 }
