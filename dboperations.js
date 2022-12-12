@@ -8,7 +8,8 @@ async function getPersonnel() {
         console.log("getPersonnel call try to connect server");
         let pool = await sql.connect(config);
         console.log("connect complete");
-        let result = await pool.request().query("SELECT personnel_id" +
+        let result = await pool.request().query("SELECT ROW_NUMBER() OVER (ORDER BY personnel.personnel_id) AS id," +
+            "personnel_id" +
             ",personnel_secret" +
             ",personnel_firstname" +
             ",personnel_lastname" +
