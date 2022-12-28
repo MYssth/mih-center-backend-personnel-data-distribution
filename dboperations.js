@@ -105,11 +105,15 @@ async function getLevelList(personnel_id) {
             .query("SELECT personnel_level_list.level_id" +
                 ",personnel_levels.level_name" +
                 ",personnel_levels.level_description" +
+                ",personnel_level_list.view_id" +
+                ",personnel_level_view_list.view_name" +
+                ",personnel_level_view_list.view_description" +
                 ",personnel_levels.mihapp_id" +
                 ",personnel_mihapps.mihapp_name" +
                 " FROM personnel_level_list " +
                 "INNER JOIN personnel_levels ON personnel_levels.level_id = personnel_level_list.level_id " +
                 "INNER JOIN personnel_mihapps ON personnel_mihapps.mihapp_id = personnel_levels.mihapp_id " +
+                "INNER JOIN personnel_level_view_list ON personnel_level_view_list.view_id = personnel_level_list.view_id " +
                 "WHERE personnel_id = @personnel_id");
         console.log("getLevelList complete");
         console.log("====================");
@@ -129,7 +133,17 @@ async function getPositions() {
         console.log("getPositions call try to connect server");
         let pool = await sql.connect(config);
         console.log("connect complete");
-        let result = await pool.request().query("SELECT * FROM personnel_positions");
+        let result = await pool.request().query("SELECT " +
+        "position_id, " +
+        "position_name, " +
+        "position_isactive, " +
+        "personnel_positions.department_id, " +
+        "personnel_departments.faction_id, " +
+        "personnel_factions.field_id " +
+        "FROM personnel_positions "+
+        "INNER JOIN personnel_departments ON personnel_departments.department_id = personnel_positions.department_id "+
+        "INNER JOIN personnel_factions ON personnel_factions.faction_id = personnel_departments.faction_id " +
+        "INNER JOIN personnel_fields ON personnel_fields.field_id = personnel_factions.field_id");
         console.log("getPositions complete");
         console.log("====================");
         return result.recordsets;
@@ -147,15 +161,64 @@ async function getDepartments() {
         console.log("getDepartments call try connect to server");
         let pool = await sql.connect(config);
         console.log("connect complete");
-        let result = await pool.request().query("SELECT * FROM personnel_departments");
+        let result = await pool.request().query("SELECT "+
+        "department_id, " +
+        "department_name, " +
+        "department_isactive, " +
+        "personnel_departments.faction_id, "+
+        "personnel_factions.field_id "+
+        "FROM personnel_departments " +
+        "INNER JOIN personnel_factions ON personnel_factions.faction_id = personnel_departments.faction_id " +
+        "INNER JOIN personnel_fields ON personnel_fields.field_id = personnel_factions.field_id");
         console.log("getDepartments complete");                                                                                               
         console.log("====================");
         return result.recordsets;
     }
     catch(error){
         console.error(error);
+        return { "status": "error", "message": error.message };
     }
 
+}
+
+async function getFactions() {
+    
+    try{
+        console.log("getFactions call try connect to sserver");
+        let pool = await sql.connect(config);
+        console.log("connect complete");
+        let result = await pool.request().query("SELECT " +
+        "faction_id, " +
+        "faction_name, " +
+        "faction_isactive, " +
+        "personnel_factions.field_id "+
+        "FROM personnel_factions " +
+        "INNER JOIN personnel_fields ON personnel_fields.field_id = personnel_factions.field_id");
+        console.log("getFactions complete");
+        console.log("====================");
+        return result.recordsets;
+    }
+    catch(error){
+        console.error(error);
+        return { "status": "error", "message": error.message };
+    }
+}
+
+async function getFields() {
+
+    try{
+        console.log("getField call try connect to server");
+        let pool = await sql.connect(config);
+        console.log("connect complete");
+        let result = await pool.request().query("SELECT * FROM personnel_fields");
+        console.log("getFields complete");
+        console.log("====================");
+        return result.recordsets;
+    }
+    catch(error){
+        console.error(error);
+        return { "status": "error", "message": error.message };
+    }
 }
 
 async function getMihapps() {
@@ -183,5 +246,7 @@ module.exports = {
     getLevelList: getLevelList,
     getPositions: getPositions,
     getDepartments: getDepartments,
+    getFactions: getFactions,
+    getFields: getFields,
     getMihapps: getMihapps,
 }

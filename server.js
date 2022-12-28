@@ -3,6 +3,7 @@ const dboperations = require('./dboperations');
 var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+const { request, response } = require('express');
 var app = express();
 var router = express.Router();
 
@@ -83,6 +84,26 @@ router.route('/getpositions').get((request, response) => {
 router.route('/getdepartments').get((request, response) => {
 
     dboperations.getDepartments().then(result => {
+        response.json(result[0]);
+    }).catch(err => {
+        console.error(err);
+        response.sendStatus(500);
+    });
+});
+
+router.route('/getfactions').get((request, response) => {
+
+    dboperations.getFactions().then(result => {
+        response.json(result[0]);
+    }).catch(err => {
+        console.error(err);
+        response.sendStatus(500);
+    });
+});
+
+router.route('/getfields').get((request, response) => {
+
+    dboperations.getFields().then(result => {
         response.json(result[0]);
     }).catch(err => {
         console.error(err);
