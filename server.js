@@ -59,6 +59,17 @@ router.route('/getlevels').get((request, response) => {
 
 });
 
+router.route('/getlevelviews').get((request, response) => {
+
+    dboperations.getLevelViews().then(result => {
+        response.json(result[0]);
+    }).catch(err => {
+        console.error(err);
+        response.sendStatus(500);
+    })
+
+});
+
 router.route('/getlevellist/:id').get((request, response) => {
 
     dboperations.getLevelList(request.params.id).then(result => {

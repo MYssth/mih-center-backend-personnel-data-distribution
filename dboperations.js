@@ -95,6 +95,26 @@ async function getLevels(){
 
 }
 
+async function getLevelViews(){
+
+    try{
+
+        console.log("getLevelViews request try to connect server");
+        let pool = await sql.connect(config);
+        console.log("connect complete");
+        let result = await pool.request().query("SELECT * FROM personnel_level_view_list");
+        console.log("getLevelViews compelete");
+        console.log("====================");
+        return result.recordsets
+        
+    }
+    catch(error){
+        console.error(error);
+        return { "status": "error", "message": error.message };
+    }
+
+}
+
 async function getLevelList(personnel_id) {
     try {
 
@@ -113,7 +133,7 @@ async function getLevelList(personnel_id) {
                 " FROM personnel_level_list " +
                 "INNER JOIN personnel_levels ON personnel_levels.level_id = personnel_level_list.level_id " +
                 "INNER JOIN personnel_mihapps ON personnel_mihapps.mihapp_id = personnel_levels.mihapp_id " +
-                "INNER JOIN personnel_level_view_list ON personnel_level_view_list.view_id = personnel_level_list.view_id " +
+                "LEFT JOIN personnel_level_view_list ON personnel_level_view_list.view_id = personnel_level_list.view_id " +
                 "WHERE personnel_id = @personnel_id");
         console.log("getLevelList complete");
         console.log("====================");
@@ -243,6 +263,7 @@ module.exports = {
     getPersonnel: getPersonnel,
     getPersonnelById: getPersonnelById,
     getLevels: getLevels,
+    getLevelViews: getLevelViews,
     getLevelList: getLevelList,
     getPositions: getPositions,
     getDepartments: getDepartments,
