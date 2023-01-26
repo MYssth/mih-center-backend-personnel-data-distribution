@@ -133,6 +133,17 @@ router.route('/getmihapps').get((request, response) => {
 
 });
 
+router.route('/getsignature/:personnel_id').get((request, response) => {
+
+    dboperations.getSignature(request.params.personnel_id).then(result => {
+        response.json(result);
+    }).catch(err => {
+        console.error(err);
+        response.sendStatus(500);
+    });
+
+});
+
 var port = process.env.PORT;
 app.listen(port);
 console.log('personnel-data-distribution API is running at ' + port);

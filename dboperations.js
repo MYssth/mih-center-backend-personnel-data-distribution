@@ -259,6 +259,28 @@ async function getMihapps() {
     }
 }
 
+async function getSignature(personnel_id){
+    try{
+
+        console.log("getSignature call try to connect server");
+        let pool = await sql.connect(config);
+        console.log("connect complete");
+        let result = await pool.request().input('personnel_id', sql.VarChar, personnel_id)
+        .query("SELECT * FROM personnel_signature WHERE personnel_id = @personnel_id");
+        const jsonData = {
+            personnel_id: personnel_id,
+            signature_data: Buffer.from(result.recordset[0].signature_data).toString(),
+        }
+        console.log("getSignature complete");
+        console.log("====================");
+        return jsonData;
+    }
+    catch(error){
+        console.error(error);
+        return { "status": "error", "message": error.message };
+    }
+}
+
 module.exports = {
     getPersonnel: getPersonnel,
     getPersonnelById: getPersonnelById,
@@ -270,4 +292,5 @@ module.exports = {
     getFactions: getFactions,
     getFields: getFields,
     getMihapps: getMihapps,
+    getSignature: getSignature,
 }
