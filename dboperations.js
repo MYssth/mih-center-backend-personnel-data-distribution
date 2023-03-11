@@ -157,6 +157,7 @@ async function getPositions() {
         "position_id, " +
         "position_name, " +
         "position_isactive, " +
+        "personnel_positions.hims_id, " +
         "personnel_positions.department_id, " +
         "personnel_departments.faction_id, " +
         "personnel_factions.field_id " +
@@ -185,6 +186,7 @@ async function getDepartments() {
         "department_id, " +
         "department_name, " +
         "department_isactive, " +
+        "personnel_departments.hims_id, " +
         "personnel_departments.faction_id, "+
         "personnel_factions.field_id "+
         "FROM personnel_departments " +
@@ -211,6 +213,7 @@ async function getFactions() {
         "faction_id, " +
         "faction_name, " +
         "faction_isactive, " +
+        "personnel_factions.hims_id, " +
         "personnel_factions.field_id "+
         "FROM personnel_factions " +
         "INNER JOIN personnel_fields ON personnel_fields.field_id = personnel_factions.field_id");
