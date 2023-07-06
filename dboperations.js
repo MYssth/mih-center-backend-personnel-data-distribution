@@ -75,9 +75,9 @@ async function getPersonnelById(personnel_id) {
     }
 }
 
-async function getLevels(){
+async function getLevels() {
 
-    try{
+    try {
 
         console.log("getLevels request try to connect server");
         let pool = await sql.connect(config);
@@ -86,18 +86,18 @@ async function getLevels(){
         console.log("getLevels compelete");
         console.log("====================");
         return result.recordsets
-        
+
     }
-    catch(error){
+    catch (error) {
         console.error(error);
         return { "status": "error", "message": error.message };
     }
 
 }
 
-async function getLevelViews(){
+async function getLevelViews() {
 
-    try{
+    try {
 
         console.log("getLevelViews request try to connect server");
         let pool = await sql.connect(config);
@@ -106,13 +106,30 @@ async function getLevelViews(){
         console.log("getLevelViews compelete");
         console.log("====================");
         return result.recordsets
-        
+
     }
-    catch(error){
+    catch (error) {
         console.error(error);
         return { "status": "error", "message": error.message };
     }
 
+}
+
+async function getLvViews(){
+    try{
+
+        console.log("getLvViews request try to connect server");
+        let pool = await sql.connect(config);
+        console.log("connect complete");
+        let result = await pool.request().query("SELECT * FROM personnel_level_view_list2");
+        console.log("getLvViews compelete");
+        console.log("====================");
+        return result.recordsets[0];
+    }
+    catch (error) {
+        console.error(error);
+        return { "status": "error", "message": error.message };
+    }
 }
 
 async function getLevelList(personnel_id) {
@@ -154,17 +171,17 @@ async function getPositions() {
         let pool = await sql.connect(config);
         console.log("connect complete");
         let result = await pool.request().query("SELECT " +
-        "position_id, " +
-        "position_name, " +
-        "position_isactive, " +
-        "personnel_positions.hims_id, " +
-        "personnel_positions.department_id, " +
-        "personnel_departments.faction_id, " +
-        "personnel_factions.field_id " +
-        "FROM personnel_positions "+
-        "INNER JOIN personnel_departments ON personnel_departments.department_id = personnel_positions.department_id "+
-        "INNER JOIN personnel_factions ON personnel_factions.faction_id = personnel_departments.faction_id " +
-        "INNER JOIN personnel_fields ON personnel_fields.field_id = personnel_factions.field_id");
+            "position_id, " +
+            "position_name, " +
+            "position_isactive, " +
+            "personnel_positions.hims_id, " +
+            "personnel_positions.department_id, " +
+            "personnel_departments.faction_id, " +
+            "personnel_factions.field_id " +
+            "FROM personnel_positions " +
+            "INNER JOIN personnel_departments ON personnel_departments.department_id = personnel_positions.department_id " +
+            "INNER JOIN personnel_factions ON personnel_factions.faction_id = personnel_departments.faction_id " +
+            "INNER JOIN personnel_fields ON personnel_fields.field_id = personnel_factions.field_id");
         console.log("getPositions complete");
         console.log("====================");
         return result.recordsets;
@@ -182,21 +199,21 @@ async function getDepartments() {
         console.log("getDepartments call try connect to server");
         let pool = await sql.connect(config);
         console.log("connect complete");
-        let result = await pool.request().query("SELECT "+
-        "department_id, " +
-        "department_name, " +
-        "department_isactive, " +
-        "personnel_departments.hims_id, " +
-        "personnel_departments.faction_id, "+
-        "personnel_factions.field_id "+
-        "FROM personnel_departments " +
-        "INNER JOIN personnel_factions ON personnel_factions.faction_id = personnel_departments.faction_id " +
-        "INNER JOIN personnel_fields ON personnel_fields.field_id = personnel_factions.field_id");
-        console.log("getDepartments complete");                                                                                               
+        let result = await pool.request().query("SELECT " +
+            "department_id, " +
+            "department_name, " +
+            "department_isactive, " +
+            "personnel_departments.hims_id, " +
+            "personnel_departments.faction_id, " +
+            "personnel_factions.field_id " +
+            "FROM personnel_departments " +
+            "INNER JOIN personnel_factions ON personnel_factions.faction_id = personnel_departments.faction_id " +
+            "INNER JOIN personnel_fields ON personnel_fields.field_id = personnel_factions.field_id");
+        console.log("getDepartments complete");
         console.log("====================");
         return result.recordsets;
     }
-    catch(error){
+    catch (error) {
         console.error(error);
         return { "status": "error", "message": error.message };
     }
@@ -204,24 +221,24 @@ async function getDepartments() {
 }
 
 async function getFactions() {
-    
-    try{
+
+    try {
         console.log("getFactions call try connect to sserver");
         let pool = await sql.connect(config);
         console.log("connect complete");
         let result = await pool.request().query("SELECT " +
-        "faction_id, " +
-        "faction_name, " +
-        "faction_isactive, " +
-        "personnel_factions.hims_id, " +
-        "personnel_factions.field_id "+
-        "FROM personnel_factions " +
-        "INNER JOIN personnel_fields ON personnel_fields.field_id = personnel_factions.field_id");
+            "faction_id, " +
+            "faction_name, " +
+            "faction_isactive, " +
+            "personnel_factions.hims_id, " +
+            "personnel_factions.field_id " +
+            "FROM personnel_factions " +
+            "INNER JOIN personnel_fields ON personnel_fields.field_id = personnel_factions.field_id");
         console.log("getFactions complete");
         console.log("====================");
         return result.recordsets;
     }
-    catch(error){
+    catch (error) {
         console.error(error);
         return { "status": "error", "message": error.message };
     }
@@ -229,7 +246,7 @@ async function getFactions() {
 
 async function getFields() {
 
-    try{
+    try {
         console.log("getField call try connect to server");
         let pool = await sql.connect(config);
         console.log("connect complete");
@@ -238,15 +255,15 @@ async function getFields() {
         console.log("====================");
         return result.recordsets;
     }
-    catch(error){
+    catch (error) {
         console.error(error);
         return { "status": "error", "message": error.message };
     }
 }
 
 async function getMihapps() {
-    try{
-        
+    try {
+
         console.log("getMihapps call try to connect server");
         let pool = await sql.connect(config);
         console.log("connect complete");
@@ -256,20 +273,20 @@ async function getMihapps() {
         return result.recordsets;
 
     }
-    catch(error){
+    catch (error) {
         console.error(error);
         return { "status": "error", "message": error.message };
     }
 }
 
-async function getSignature(personnel_id){
-    try{
+async function getSignature(personnel_id) {
+    try {
 
         console.log("getSignature call try to connect server");
         let pool = await sql.connect(config);
         console.log("connect complete");
         let result = await pool.request().input('personnel_id', sql.VarChar, personnel_id)
-        .query("SELECT * FROM personnel_signature WHERE personnel_id = @personnel_id");
+            .query("SELECT * FROM personnel_signature WHERE personnel_id = @personnel_id");
         const jsonData = {
             personnel_id: personnel_id,
             signature_data: Buffer.from(result.recordset[0].signature_data).toString(),
@@ -278,7 +295,7 @@ async function getSignature(personnel_id){
         console.log("====================");
         return jsonData;
     }
-    catch(error){
+    catch (error) {
         console.error(error);
         return { "status": "error", "message": error.message };
     }
@@ -289,6 +306,7 @@ module.exports = {
     getPersonnelById: getPersonnelById,
     getLevels: getLevels,
     getLevelViews: getLevelViews,
+    getLvViews: getLvViews,
     getLevelList: getLevelList,
     getPositions: getPositions,
     getDepartments: getDepartments,
