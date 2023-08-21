@@ -37,7 +37,7 @@ router.route("/getpersonnel").get((request, response) => {
   dboperations
     .getPersonnel()
     .then((result) => {
-      response.json(result[0]);
+      response.json(result);
     })
     .catch((err) => {
       console.error(err);
@@ -49,7 +49,7 @@ router.route("/getpersonnel/:id").get((request, response) => {
   dboperations
     .getPersonnelById(request.params.id)
     .then((result) => {
-      response.json(result[0]);
+      response.json(result);
     })
     .catch((err) => {
       console.error(err);
@@ -61,7 +61,7 @@ router.route("/getlevels").get((request, response) => {
   dboperations
     .getLevels()
     .then((result) => {
-      response.json(result[0]);
+      response.json(result);
     })
     .catch((err) => {
       console.error(err);
@@ -72,18 +72,6 @@ router.route("/getlevels").get((request, response) => {
 router.route("/getlevelviews").get((request, response) => {
   dboperations
     .getLevelViews()
-    .then((result) => {
-      response.json(result[0]);
-    })
-    .catch((err) => {
-      console.error(err);
-      response.sendStatus(500);
-    });
-});
-
-router.route("/getlvviews").get((request, response) => {
-  dboperations
-    .getLvViews()
     .then((result) => {
       response.json(result);
     })
@@ -97,19 +85,7 @@ router.route("/getlevellist/:id").get((request, response) => {
   dboperations
     .getLevelList(request.params.id)
     .then((result) => {
-      response.json(result[0]);
-    })
-    .catch((err) => {
-      console.error(err);
-      response.sendStatus(500);
-    });
-});
-
-router.route("/getpositions").get((request, response) => {
-  dboperations
-    .getPositions()
-    .then((result) => {
-      response.json(result[0]);
+      response.json(result);
     })
     .catch((err) => {
       console.error(err);
@@ -121,31 +97,7 @@ router.route("/getdepartments").get((request, response) => {
   dboperations
     .getDepartments()
     .then((result) => {
-      response.json(result[0]);
-    })
-    .catch((err) => {
-      console.error(err);
-      response.sendStatus(500);
-    });
-});
-
-router.route("/getfactions").get((request, response) => {
-  dboperations
-    .getFactions()
-    .then((result) => {
-      response.json(result[0]);
-    })
-    .catch((err) => {
-      console.error(err);
-      response.sendStatus(500);
-    });
-});
-
-router.route("/getfields").get((request, response) => {
-  dboperations
-    .getFields()
-    .then((result) => {
-      response.json(result[0]);
+      response.json(result);
     })
     .catch((err) => {
       console.error(err);
@@ -157,7 +109,7 @@ router.route("/getmihapps").get((request, response) => {
   dboperations
     .getMihapps()
     .then((result) => {
-      response.json(result[0]);
+      response.json(result);
     })
     .catch((err) => {
       console.error(err);
