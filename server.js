@@ -45,6 +45,18 @@ router.route("/getpersonnel").get((request, response) => {
     });
 });
 
+router.route("/getactvpersonnel").get((request, response) => {
+  dboperations
+    .getActvPersonnel()
+    .then((result) => {
+      response.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      response.sendStatus(500);
+    });
+});
+
 router.route("/getpersonnel/:id").get((request, response) => {
   dboperations
     .getPersonnelById(request.params.id)
@@ -117,9 +129,9 @@ router.route("/getmihapps").get((request, response) => {
     });
 });
 
-router.route("/getsignature/:personnel_id").get((request, response) => {
+router.route("/getsignature/:psn_id").get((request, response) => {
   dboperations
-    .getSignature(request.params.personnel_id)
+    .getSignature(request.params.psn_id)
     .then((result) => {
       response.json(result);
     })
@@ -128,6 +140,55 @@ router.route("/getsignature/:personnel_id").get((request, response) => {
       response.sendStatus(500);
     });
 });
+
+router.route("/updatepersonnel").post((request, response) => {
+  let data = { ...request.body };
+
+  dboperations
+    .updatePersonnel(data)
+    .then((result) => {
+      response.status(200).json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      response.sendStatus(500);
+    });
+});
+
+router.route("/resetsecret/:psn_id").delete((request, response) => {
+  dboperations
+    .resetSecret(request.params.psn_id)
+    .then((result) => {
+      response.status(200).json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      response.sendStatus(500);
+    });
+});
+
+router.route("/getversion").get((request, response) => {
+  dboperations
+    .getVersion()
+    .then((result) => {
+      response.json(result);
+    })
+    .catch((err) => {
+      console.error(err);
+      response.setStatus(500);
+    });
+});
+
+// router.route('/addlvtoall').post((request, response) => {
+
+//     dboperations.addLvToAll().then(result => {
+//         response.status(200).json(result);
+//     }).catch(err => {
+//         console.error(err);
+//         response.sendStatus(500);
+//     });
+
+// });
 
 var port = process.env.PORT;
 app.listen(port);
