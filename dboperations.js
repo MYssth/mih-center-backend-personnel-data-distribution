@@ -1,6 +1,7 @@
 require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 var config = require("./dbconfig");
 const sql = require("mssql");
+const bcrypt = require("bcrypt");
 
 async function finalizeData(himsPsn) {
   console.log("finalize personnel data");
@@ -260,7 +261,13 @@ async function addPersonnelLevel(psn_id, lv_list) {
   var queryText = "INSERT INTO psn_lv_list (psn_id, lv_id, view_id) VALUES ";
   for (let i = 0; i < lv_list.length; i++) {
     queryText +=
-      "('" + psn_id + "', '" + lv_list[i].lv_id + "', '" + lv_list[i].view_id + "') ";
+      "('" +
+      psn_id +
+      "', '" +
+      lv_list[i].lv_id +
+      "', '" +
+      lv_list[i].view_id +
+      "') ";
     if (i < lv_list.length - 1) {
       queryText += ",";
     }
@@ -348,6 +355,41 @@ async function updatePersonnel(data) {
       console.log("signature detect, adding signature");
       await addSignature(data);
     }
+    if (data.secret) {
+      console.log("Secret change");
+      let pool = await sql.connect(config);
+      let hash_secret = "";
+      if (data.secret.length < 30) {
+        hash_secret = await bcrypt.hash(
+          data.secret,
+          parseInt(process.env.saltRounds)
+        );
+        console.log("hashing password complete");
+        await pool
+          .request()
+          .input("psn_id", sql.VarChar, data.psn_id)
+          .input("secret", sql.VarChar, hash_secret)
+          .query(
+            "BEGIN TRY" +
+              " INSERT INTO psn (id, secret, exp_date)" +
+              " VALUES (@psn_id, @secret, DATEADD(day, 90, GETDATE()))" +
+              " END TRY" +
+              " BEGIN CATCH" +
+              " IF ERROR_NUMBER() IN (2601, 2627)" +
+              " UPDATE psn SET secret = @secret, exp_date = DATEADD(day, 90, GETDATE())" +
+              " WHERE id = @psn_id" +
+              " END CATCH"
+          );
+        console.log("secret change complete");
+      } else {
+        console.log("new password too long");
+        return {
+          status: "error",
+          message: "รหัสผ่านต้องไม่ยาวเกิน 30 ตัวอักษร",
+        };
+      }
+    }
+
     console.log("update complete");
     console.log("====================");
     return { status: "ok" };
